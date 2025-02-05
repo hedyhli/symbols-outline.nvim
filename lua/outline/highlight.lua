@@ -9,13 +9,17 @@ local M = {
 ---Clear all highlights in buffer
 ---@param bufnr integer
 function M.clear_all_ns(bufnr)
-  vim.api.nvim_buf_clear_namespace(bufnr, -1, 0, -1)
+  if vim.api.nvim_buf_is_valid(bufnr) then
+    pcall(function() vim.api.nvim_buf_clear_namespace(bufnr, -1, 0, -1) end)
+  end
 end
 
 ---Clear hover highlights in buffer
 ---@param bufnr integer
 function M.clear_hovers(bufnr)
-  vim.api.nvim_buf_clear_namespace(bufnr, M.ns.hover, 0, -1)
+  if vim.api.nvim_buf_is_valid(bufnr) then
+    vim.api.nvim_buf_clear_namespace(bufnr, M.ns.hover, 0, -1)
+  end
 end
 
 ---Add single hover highlights

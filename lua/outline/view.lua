@@ -99,13 +99,17 @@ end
 ---Replace all lines in buffer with given new `lines`
 ---@param lines string[]
 function View:rewrite_lines(lines)
-  vim.api.nvim_buf_set_option(self.buf, 'modifiable', true)
-  vim.api.nvim_buf_set_lines(self.buf, 0, -1, false, lines)
-  vim.api.nvim_buf_set_option(self.buf, 'modifiable', false)
+  if self.buf and vim.api.nvim_buf_is_valid(self.buf) then
+    vim.api.nvim_buf_set_option(self.buf, 'modifiable', true)
+    vim.api.nvim_buf_set_lines(self.buf, 0, -1, false, lines)
+    vim.api.nvim_buf_set_option(self.buf, 'modifiable', false)
+  end
 end
 
 function View:clear_all_ns()
-  highlight.clear_all_ns(self.buf)
+  if self.buf then
+    highlight.clear_all_ns(self.buf)
+  end
 end
 
 ---Ensure all existing highlights are already cleared before calling!
